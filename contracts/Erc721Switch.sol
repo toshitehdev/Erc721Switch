@@ -17,6 +17,7 @@ contract Erc721Switch is ERC721 {
     //ercord erc20 address
     address ercordAddress = 0x1bACc44C0E404dA1718c36cdD2a73aFA1B8E2d30;
     uint256 private s_tokenCounter;
+    mapping(uint256 => bool) idMinted;
 
     constructor() ERC721("ErcOrdinal", "ERCORD") {
         s_tokenCounter = 0;
@@ -33,15 +34,16 @@ contract Erc721Switch is ERC721 {
             IErcord(ercordAddress).getIdToTokens(_id) == msg.sender,
             "Must be the owner"
         );
-
+        //switch, send ercord from owner to this address
         IErcord(ercordAddress).erc721Switch(msg.sender, _id);
 
-        if (ownerOf(_id) == address(this)) {
+        if (idMinted[_id] == true) {
             //if this adress is the owner (been minted before, and switched back) of erc721, transfer
             _transfer(address(this), msg.sender, _id);
         } else {
             //if this address is NOT the owner (haven't been minted), mint
-            _safeMint(msg.sender, _id);
+            _mint(msg.sender, _id);
+            idMinted[_id] = true;
         }
 
         s_tokenCounter = s_tokenCounter + 1;
