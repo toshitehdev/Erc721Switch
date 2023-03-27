@@ -33,7 +33,7 @@ contract Erc721Switch is ERC721 {
             IErcord(ercordAddress).getIdToTokens(_id) == msg.sender,
             "Must be the owner"
         );
-        //switch, send ercord from owner to this address
+
         IErcord(ercordAddress).erc721Switch(msg.sender, _id);
 
         if (ownerOf(_id) == address(this)) {
