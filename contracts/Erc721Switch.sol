@@ -16,19 +16,16 @@ interface IErcord {
 contract Erc721Switch is ERC721 {
     //ercord erc20 address
     address ercordAddress = 0x1bACc44C0E404dA1718c36cdD2a73aFA1B8E2d30;
-    uint256 private s_tokenCounter;
     mapping(uint256 => bool) idMinted;
 
-    constructor() ERC721("ErcOrdinal", "ERCORD") {
-        s_tokenCounter = 0;
-    }
+    constructor() ERC721("ErcOrdinal", "ERCORD") {}
 
     function _baseURI() internal pure override returns (string memory) {
         return
             "ipfs://bafybeibqknpxt2dc2s3o5ulfsvqognymzzaot2xk6hkwonhq3qmyerljfe/";
     }
 
-    function switchToErc721(uint256 _id) public returns (uint256) {
+    function switchToErc721(uint256 _id) public returns (bool) {
         //read ercord erc20 owner
         require(
             IErcord(ercordAddress).getIdToTokens(_id) == msg.sender,
@@ -45,19 +42,18 @@ contract Erc721Switch is ERC721 {
             _mint(msg.sender, _id);
             idMinted[_id] = true;
         }
-
-        s_tokenCounter = s_tokenCounter + 1;
-        return s_tokenCounter;
+        return true;
     }
 
     //switch eNFT back to ercord erc20
-    function switchToErcord(uint256[] memory _ids) public {
+    function switchToErcord(uint256[] memory _ids) public returns (bool) {
         require(_ids.length == 1, "Can only switch one at a time");
         require(ownerOf(_ids[0]) == msg.sender, "Must be the owner");
         //transfer erc20 to the owner
         IErcord(ercordAddress).transferMany(msg.sender, _ids);
         //transfer eNft to contract address
         _transfer(msg.sender, address(this), _ids[0]);
+        return true;
     }
 
     function tokenURI(
@@ -65,9 +61,5 @@ contract Erc721Switch is ERC721 {
     ) public pure override returns (string memory) {
         string memory id = Strings.toString(tokenId);
         return string.concat(_baseURI(), id, ".json");
-    }
-
-    function getTokenCounter() public view returns (uint256) {
-        return s_tokenCounter;
     }
 }
