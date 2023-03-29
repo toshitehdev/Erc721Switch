@@ -31,9 +31,7 @@ interface IERC165 {
 }
 
 // File @openzeppelin/contracts/token/ERC721/IERC721.sol@v4.8.2
-
 // OpenZeppelin Contracts (last updated v4.8.0) (token/ERC721/IERC721.sol)
-
 pragma solidity ^0.8.0;
 
 /**
@@ -216,7 +214,6 @@ interface IERC721Metadata is IERC721 {
 }
 
 // File @openzeppelin/contracts/token/ERC721/IERC721Receiver.sol@v4.8.2
-
 // OpenZeppelin Contracts (last updated v4.6.0) (token/ERC721/IERC721Receiver.sol)
 
 pragma solidity ^0.8.0;
@@ -245,7 +242,6 @@ interface IERC721Receiver {
 }
 
 // File @openzeppelin/contracts/utils/Address.sol@v4.8.2
-
 // OpenZeppelin Contracts (last updated v4.8.0) (utils/Address.sol)
 
 pragma solidity ^0.8.1;
