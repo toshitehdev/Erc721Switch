@@ -1,5 +1,11 @@
 //SPDX-License-Identifier: MIT
-//https://ercordinal.io
+
+//NFT that will NEVER goes to 0 in value, even if there's no buy offer!
+//website: https://ercordinal.io
+//telegram: https://t.me/ercordinal
+//twitter: https://twitter.com/ErcOrdinal
+//learn more: https://medium.com/@toshitehdev/ercordinal-implementing-ordinal-system-on-erc20-interface-13f85b299a48
+
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
