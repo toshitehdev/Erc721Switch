@@ -7,6 +7,7 @@
 //twitter: https://twitter.com/ErcOrdinal
 //learn more: https://medium.com/@toshitehdev/ercordinal-implementing-ordinal-system-on-erc20-interface-13f85b299a48
 
+// File @openzeppelin/contracts/utils/introspection/IERC165.sol@v4.8.2
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/IERC165.sol)
 pragma solidity ^0.8.0;
 
@@ -33,6 +34,7 @@ interface IERC165 {
 
 // File @openzeppelin/contracts/token/ERC721/IERC721.sol@v4.8.2
 // OpenZeppelin Contracts (last updated v4.8.0) (token/ERC721/IERC721.sol)
+
 pragma solidity ^0.8.0;
 
 /**
@@ -188,7 +190,6 @@ interface IERC721 is IERC165 {
 }
 
 // File @openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol@v4.8.2
-
 // OpenZeppelin Contracts v4.4.1 (token/ERC721/extensions/IERC721Metadata.sol)
 
 pragma solidity ^0.8.0;
@@ -1606,11 +1607,13 @@ interface IErcord {
     function erc721Switch(address _from, uint256 _id) external;
 
     function transferMany(address _recipient, uint256[] memory _ids) external;
+
+    function claimViaErc721(uint256 _id, address _owner) external;
 }
 
 contract Erc721Switch is ERC721 {
     //ercord erc20 address
-    address ercordAddress = 0x1bACc44C0E404dA1718c36cdD2a73aFA1B8E2d30;
+    address ercordAddress = 0xC85f1A1BAaEe1E4E892EdF78e4c0A7a376459bDC;
     mapping(uint256 => bool) idMinted;
 
     constructor() ERC721("ErcOrdinal", "ERCORD") {}
@@ -1648,6 +1651,12 @@ contract Erc721Switch is ERC721 {
         IErcord(ercordAddress).transferMany(msg.sender, _ids);
         //transfer eNft to contract address
         _transfer(msg.sender, address(this), _ids[0]);
+        return true;
+    }
+
+    function claimFreeMint(uint256 _id) public returns (bool) {
+        require(ownerOf(_id) == msg.sender, "Must be the owner");
+        IErcord(ercordAddress).claimViaErc721(_id, address(this));
         return true;
     }
 
