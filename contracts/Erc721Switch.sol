@@ -1,5 +1,6 @@
 //SPDX-License-Identifier: MIT
 
+//NFT that you can trade on DEX
 //NFT that will NEVER goes to 0 in value, even if there's no buy offer!
 //website: https://ercordinal.io
 //telegram: https://t.me/ercordinal
@@ -17,11 +18,13 @@ interface IErcord {
     function erc721Switch(address _from, uint256 _id) external;
 
     function transferMany(address _recipient, uint256[] memory _ids) external;
+
+    function claimViaErc721(uint256 _id, address _owner) external;
 }
 
 contract Erc721Switch is ERC721 {
     //ercord erc20 address
-    address ercordAddress = 0x1bACc44C0E404dA1718c36cdD2a73aFA1B8E2d30;
+    address ercordAddress = 0xC85f1A1BAaEe1E4E892EdF78e4c0A7a376459bDC;
     mapping(uint256 => bool) idMinted;
 
     constructor() ERC721("ErcOrdinal", "ERCORD") {}
@@ -59,6 +62,12 @@ contract Erc721Switch is ERC721 {
         IErcord(ercordAddress).transferMany(msg.sender, _ids);
         //transfer eNft to contract address
         _transfer(msg.sender, address(this), _ids[0]);
+        return true;
+    }
+
+    function claimFreeMint(uint256 _id) public returns (bool) {
+        require(ownerOf(_id) == msg.sender, "Must be the owner");
+        IErcord(ercordAddress).claimViaErc721(_id, address(this));
         return true;
     }
 
