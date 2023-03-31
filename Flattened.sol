@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+//NFT that you can trade on DEX
 //NFT that will NEVER goes to 0 in value, even if there's no buy offer!
 //website: https://ercordinal.io
 //telegram: https://t.me/ercordinal
